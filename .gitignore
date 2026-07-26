@@ -1,0 +1,61 @@
+# ============================================================
+# Backend (.NET / C#)
+# ============================================================
+
+# Pastas de build e compilação
+Backend/bin/
+Backend/obj/
+
+# Banco de dados SQLite (gerado automaticamente na 1ª execução)
+Backend/gastos.db
+Backend/gastos.db-shm
+Backend/gastos.db-wal
+
+# User secrets e configurações locais
+Backend/appsettings.Development.json
+
+# ============================================================
+# Frontend (React / Node.js)
+# ============================================================
+
+# Dependências do Node.js (instaladas via npm install)
+frontend/node_modules/
+
+# Build de produção
+frontend/dist/
+
+# Cache do Vite e TypeScript
+frontend/.vite/
+*.tsbuildinfo
+
+# ============================================================
+# IDEs e Editores
+# ============================================================
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# JetBrains (Rider, WebStorm)
+.idea/
+
+# ============================================================
+# Diversos
+# ============================================================
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+
+# Arquivos temporários
+*.tmp
+*.swp
