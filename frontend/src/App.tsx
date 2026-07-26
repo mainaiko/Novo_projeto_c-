@@ -1,4 +1,4 @@
-//todos os imports necessários
+// Importações de hooks do React, tipos, serviços e componentes.
 import { useState, useEffect, useCallback } from 'react';
 import type { Pessoa, Transacao } from './types/types';
 import { listarPessoas, listarTransacoes } from './services/api';
@@ -10,19 +10,18 @@ import Dashboard from './components/Dashboard';
 import Notification from './components/Notification';
 import './App.css';
 
-//type - define os tipos de abas disponíveis na navegação principal.
+// Tipos de abas disponíveis na navegação principal.
 type Tab = 'pessoas' | 'transacoes' | 'dashboard';
 
-//interface - define as propriedades do componente Notification
+// Estrutura de uma notificação toast exibida ao usuário.
 interface NotificationItem {
   id: number;
   message: string;
   type: 'success' | 'error';
 }
 
-//Componente principal da aplicação
-//Gerencia a navegação por abas e o estado global de dados
-//As abas são: Pessoas, Transações e Dashboard (Resumo)
+// Componente principal da aplicação.
+// Gerencia navegação por abas (Pessoas, Transações, Dashboard) e estado global dos dados.
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('pessoas');
   const [pessoas, setPessoas] = useState<Pessoa[]>([]);
@@ -32,7 +31,7 @@ export default function App() {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [dashboardKey, setDashboardKey] = useState(0);
 
-  //Carrega a lista de pessoas do backend.
+  // Busca a lista de pessoas no backend.
   const carregarPessoas = useCallback(async () => {
     setLoadingPessoas(true);
     try {
@@ -45,7 +44,7 @@ export default function App() {
     }
   }, []);
 
-  //Carrega a lista de transações do backend.
+  // Busca a lista de transações no backend.
   const carregarTransacoes = useCallback(async () => {
     setLoadingTransacoes(true);
     try {
@@ -64,20 +63,19 @@ export default function App() {
     carregarTransacoes();
   }, [carregarPessoas, carregarTransacoes]);
 
-  //Adiciona uma notificação à fila de exibição.
-  //Cada notificação recebe um ID único para controle de remoção.
+  // Adiciona uma notificação à fila com ID único para controle de remoção.
   const addNotification = useCallback((message: string, type: 'success' | 'error') => {
     const id = Date.now();
     setNotifications((prev) => [...prev, { id, message, type }]);
   }, []);
 
-  //Remove uma notificação da fila pelo ID.
+  // Remove uma notificação da fila pelo seu ID.
   const removeNotification = useCallback((id: number) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
   }, []);
 
-  //Callback chamado quando dados mudam (criação/deleção).
-  //Recarrega as listas e incrementa a chave do dashboard para forçar refresh.
+  // Callback acionado após criação/exclusão de dados.
+  // Recarrega as listas e força atualização do dashboard.
   const handleDataChange = useCallback(() => {
     carregarPessoas();
     carregarTransacoes();

@@ -1,28 +1,25 @@
 import type { Transacao } from '../types/types';
 
-//interface - define as propriedades do componente TransacaoList
-//transacoes: Transacao[] - lista de transações
-//isLoading: boolean - indica se as transações estão sendo carregadas
+// Props do componente TransacaoList.
+// transacoes: lista a exibir. isLoading: estado de carregamento.
 interface TransacaoListProps {
   transacoes: Transacao[];
   isLoading: boolean;
 }
 
-//função formatarMoeda - formata o valor da transação em reais
+// Formata um valor numérico para moeda brasileira (R$).
 function formatarMoeda(valor: number): string {
   return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-//exporta o componente TransacaoList
+// Tabela que exibe todas as transações cadastradas.
 export default function TransacaoList({ transacoes, isLoading }: TransacaoListProps) {
   if (isLoading) {
     return <div className="data-card"><p>Carregando transações...</p></div>;
   }
 
-  //retorna o componente TransacaoList
-  //Possui cinco colunas: ID, Descrição, Pessoa, Tipo e Valor
-  //se não tiver transações exibe a mensagem de "Nenhuma transação registrada ainda."
-  //se tiver transações exibe a tabela com as transações
+  // Renderiza a tabela com colunas: ID, Descrição, Pessoa, Tipo e Valor.
+  // Exibe estado vazio se não houver transações.
   return (
     <div className="data-card">
       <h3 className="data-card__title">📊 Transações Registradas ({transacoes.length})</h3>

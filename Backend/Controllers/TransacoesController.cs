@@ -7,10 +7,10 @@ namespace Backend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-//TransacoesController herda de ControllerBase
+// Controller responsável pelos endpoints de gerenciamento de transações financeiras.
 public class TransacoesController : ControllerBase
 {
-    //metodo construtor que recebe o service como parametro
+    // Serviço de transações injetado via DI para operações de CRUD.
     private readonly ITransacaoService _transacaoService;
 
     public TransacoesController(ITransacaoService transacaoService)
@@ -18,20 +18,15 @@ public class TransacoesController : ControllerBase
         _transacaoService = transacaoService;
     }
 
-    //METODO GET QUE LISTA TODAS AS TRANSAÇÕES
-    //HttpGet = define um método que será chamado quando uma requisição GET for feita para a rota /api/transacoes
-    //IEnumerable = define que o método retorna uma coleção de transações
-    //ActionResult = define o tipo de retorno do método
+    // GET /api/transacoes — Retorna a lista de todas as transações cadastradas.
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TransacaoResponse>>> Listar()
     {
         return Ok(await _transacaoService.ListarAsync());
     }
 
-    //METODO POST QUE CRIA UMA NOVA TRANSAÇÃO
-    //HttpPost = define um método que será chamado quando uma requisição POST for feita para a rota /api/transacoes
-    //ActionResult = define o tipo de retorno do método
-    //TransacaoResponse = define o tipo de retorno do método
+    // POST /api/transacoes — Cria uma nova transação financeira.
+    // Recebe os dados no corpo da requisição e retorna HTTP 201 com a transação criada.
     [HttpPost]
     public async Task<ActionResult<TransacaoResponse>> Criar([FromBody] CriarTransacaoRequest request)
     {

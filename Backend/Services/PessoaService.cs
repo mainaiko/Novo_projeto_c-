@@ -6,8 +6,8 @@ using Backend.Models;
 
 namespace Backend.Services;
 
-// PessoaService implementa a interface IPessoaService.
-// PessoaService e o servico que lida com as operacoes de CRUD (Create, Read, Update, Delete) das pessoas.
+// Implementação do serviço de pessoas.
+// Contém as operações de criação, listagem e exclusão com validações de negócio.
 public class PessoaService : IPessoaService
 {
     private readonly AppDbContext _context;
@@ -17,8 +17,8 @@ public class PessoaService : IPessoaService
         _context = context;
     }
 
-    // Cria uma nova pessoa na residência.
-    //recebe um CriarPessoaRequest e retorna uma PessoaResponse.
+    // Cria uma nova pessoa após validar nome e idade.
+    // Retorna os dados da pessoa criada.
     public async Task<PessoaResponse> CriarAsync(CriarPessoaRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Nome))
@@ -49,14 +49,14 @@ public class PessoaService : IPessoaService
             .ToListAsync();
     }
 
-    // Deleta uma pessoa e todas as suas transações associadas (cascade delete).
-    //recebe um id e retorna true se a pessoa foi deletada com sucesso, false caso contrario.
+    // Remove uma pessoa pelo Id (cascade delete remove transações associadas).
+    // Retorna true se encontrada e removida, false se não encontrada.
     public async Task<bool> DeletarAsync(int id)
     {
         var pessoa = await _context.Pessoas.FindAsync(id);
         if (pessoa == null) return false;
 
-        // O cascade delete configurado no DbContext remove as transações associadas automaticamente
+        // O cascade delete configurado no DbContext remove as transações automaticamente.
         _context.Pessoas.Remove(pessoa);
         await _context.SaveChangesAsync();
         return true;

@@ -3,9 +3,8 @@ import type { ResumoGeral } from '../types/types';
 import { obterResumo } from '../services/api';
 
 /**
-* Formata um valor numérico para moeda brasileira (R$).
-* valor - Valor decimal a ser formatado.
-* returns String formatada (ex: "R$ 1.234,56").
+ * Formata um valor numérico para o padrão de moeda brasileira (BRL).
+ * Exemplo: 1234.56 → "R$ 1.234,56".
  */
 function formatarMoeda(valor: number): string {
   return valor.toLocaleString('pt-BR', {
@@ -13,11 +12,9 @@ function formatarMoeda(valor: number): string {
     currency: 'BRL',
   });
 }
-//Componente Dashboard de resumo financeiro.
-//refreshKey - Chave para atualizar o dashboard.
-//const[resumo,setResumo] = useState<ResumoGeral | null>(null); = armazena o resumo financeiro
-//const[isLoading,setIsLoading] = useState(true); = indica se esta carregando os dados
-//useEffect =  carrega os dados do dashboard
+// Componente de painel financeiro.
+// Exibe cards com totais gerais e tabela de resumo por pessoa.
+// Recarrega automaticamente quando refreshKey muda.
 
 export default function Dashboard({ refreshKey }: { refreshKey: number }) {
   const [resumo, setResumo] = useState<ResumoGeral | null>(null);
@@ -35,13 +32,10 @@ export default function Dashboard({ refreshKey }: { refreshKey: number }) {
         setIsLoading(false);
       }
     };
-    //A função carregar é chamada quando o componente é montado e quando a refreshKey muda
-    //setIsLoading(true); = define que esta carregando os dados
-    //try {} = bloco de codigo que tenta carregar os dados
-    //setIsLoading(false); = define que parou de carregar os dados
+    // Recarrega os dados sempre que refreshKey muda (ex: após criar/deletar dados).
     carregar();
   }, [refreshKey]);
-  //Se estiver carregando exibe a mensagem de carregamento
+  // Exibe spinner enquanto os dados são carregados.
   if (isLoading) {
     return (
       <div className="data-card">
@@ -50,7 +44,7 @@ export default function Dashboard({ refreshKey }: { refreshKey: number }) {
       </div>
     );
   }
-  //Se nao tiver resumo exibe a mensagem de erro
+  // Exibe mensagem de erro caso o resumo não tenha sido carregado.
   if (!resumo) {
     return (
       <div className="data-card">
@@ -61,7 +55,7 @@ export default function Dashboard({ refreshKey }: { refreshKey: number }) {
       </div>
     );
   }
-  //Se tiver resumo exibe o resumo financeiro
+  // Renderiza o painel financeiro completo.
   return (
     <div className="dashboard">
       {/* Cards de totais gerais */}

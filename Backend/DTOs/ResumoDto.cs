@@ -1,40 +1,40 @@
 namespace Backend.DTOs;
 
-// DTO que representa o resumo financeiro de uma pessoa individual.
-// Calculado a partir de todas as transações associadas à pessoa.
+// DTO com o resumo financeiro individual de uma pessoa.
+// Os totais são calculados a partir das transações associadas.
 public class ResumoPessoaDto
 {
-    // Id da pessoa.
+    // Identificador da pessoa.
     public int PessoaId { get; set; }
 
-    // Nome da pessoa para exibição.
+    // Nome da pessoa, utilizado para exibição no front-end.
     public string PessoaNome { get; set; } = string.Empty;
 
-    // Soma de todas as transações do tipo Receita desta pessoa.
+    // Total acumulado das receitas desta pessoa.
     public decimal TotalReceitas { get; set; }
 
-    // Soma de todas as transações do tipo Despesa desta pessoa.
+    // Total acumulado das despesas desta pessoa.
     public decimal TotalDespesas { get; set; }
 
-    // Saldo líquido = TotalReceitas - TotalDespesas.
-    // Valor positivo indica superávit, negativo indica déficit.
+    // Saldo líquido (receitas - despesas).
+    // Positivo = superávit, negativo = déficit.
     public decimal SaldoLiquido => TotalReceitas - TotalDespesas;
 }
 
-// DTO que representa o resumo financeiro consolidado da residência inteira.
-// Agrega os dados de todas as pessoas para uma visão geral.
+// DTO com o resumo financeiro consolidado de toda a residência.
+// Agrega os totais individuais de cada pessoa.
 public class ResumoGeralDto
 {
-    // Lista com o resumo individual de cada pessoa.
+    // Resumo financeiro individual de cada pessoa da residência.
     public List<ResumoPessoaDto> ResumosPorPessoa { get; set; } = new();
 
-    // Soma de todas as receitas de todas as pessoas.
+    // Total acumulado de receitas de todas as pessoas.
     public decimal TotalGeralReceitas { get; set; }
 
-    // Soma de todas as despesas de todas as pessoas.
+    // Total acumulado de despesas de todas as pessoas.
     public decimal TotalGeralDespesas { get; set; }
 
-    // Saldo líquido geral da residência = TotalGeralReceitas - TotalGeralDespesas.
-    // Valor positivo indica superávit, negativo indica déficit.
+    // Saldo líquido geral da residência (receitas - despesas).
+    // Positivo = superávit, negativo = déficit.
     public decimal SaldoLiquidoGeral => TotalGeralReceitas - TotalGeralDespesas;
 }

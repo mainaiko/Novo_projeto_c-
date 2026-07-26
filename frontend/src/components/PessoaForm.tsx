@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { criarPessoa, ApiRequestError } from '../services/api';
 
-//interface - define as propriedades do componente PessoaForm
-//onPessoaCriada: () => void - função para criar pessoa
-//onNotify: (message: string, type: 'success' | 'error') => void - função para notificar
+// Props do componente PessoaForm.
+// onPessoaCriada: callback após criação. onNotify: exibe notificações ao usuário.
 interface PessoaFormProps {
   onPessoaCriada: () => void;
   onNotify: (message: string, type: 'success' | 'error') => void;
 }
-//exporta o componente PessoaForm
+// Formulário para cadastro de uma nova pessoa (nome e idade).
 export default function PessoaForm({ onPessoaCriada, onNotify }: PessoaFormProps) {
   const [nome, setNome] = useState('');
   const [idade, setIdade] = useState('');
@@ -43,8 +42,7 @@ export default function PessoaForm({ onPessoaCriada, onNotify }: PessoaFormProps
     }
   };
 
-  //renderiza o componente PessoaForm
-  //o formulário possui dois campos: nome e idade
+  // Renderiza o formulário com campos de nome e idade.
   return (
     <form className="form-card" onSubmit={handleSubmit}>
       <h3 className="form-card__title">👤 Nova Pessoa</h3>

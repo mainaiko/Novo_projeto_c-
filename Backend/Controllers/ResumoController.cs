@@ -4,31 +4,26 @@ using Backend.Services;
 
 namespace Backend.Controllers;
 
-//ApiController = permite que o controller receba requisições HTTP
+// Habilita validação automática do ModelState e binding de parâmetros
 [ApiController]
 
-//Route = define a rota da API
+// Define a rota base como /api/resumo
 [Route("api/[controller]")]
 
-//ResumoController herda de ControllerBase
+// Controller responsável pelo endpoint de resumo financeiro da residência.
 public class ResumoController : ControllerBase
 {
-    //readonly = somente leitura
-    private readonly ITransacaoService _transacaoService; // _transacaoService e uma variavel privada que recebe a instancia de ITransacaoService
-    //ITransacaoService e uma interface que define os métodos que o controller pode usar
+    // Serviço de transações injetado via DI, utilizado para calcular o resumo financeiro.
+    private readonly ITransacaoService _transacaoService;
 
-    //construtor que recebe o service como parametro
+    // Construtor com injeção de dependência do serviço de transações.
     public ResumoController(ITransacaoService transacaoService)
     {
         _transacaoService = transacaoService;
     }
 
-    // Retorna o resumo financeiro consolidado da residência.
-    // 
-    // Inclui:
-    // - Totais por pessoa (receitas, despesas, saldo líquido).
-    // - Total geral (soma de todas receitas, despesas e saldo da residência).
-    // 
+    // GET /api/resumo — Retorna o resumo financeiro consolidado da residência.
+    // Inclui totais por pessoa (receitas, despesas, saldo) e totais gerais.
     // Pessoas sem transações aparecem com valores zerados.
 
     [HttpGet]

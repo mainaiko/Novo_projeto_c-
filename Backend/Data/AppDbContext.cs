@@ -3,29 +3,28 @@ using Backend.Models;
 
 namespace Backend.Data;
 
-//AppDbContext herda de DbContext
-//DbContext e uma classe que fornece métodos e propriedades para interagir com o banco de dados
-//Dbcontex vem do pacote Microsoft.EntityFrameworkCore
+// Contexto do banco de dados da aplicação.
+// Herda de DbContext (Entity Framework Core) para gerenciar a conexão
+// e o mapeamento objeto-relacional das entidades.
 public class AppDbContext : DbContext
 {
-    //DbSet<T> e uma classe que representa uma tabela no banco de dados
+    // DbSet representa a tabela de cada entidade no banco de dados.
     public DbSet<Pessoa> Pessoas => Set<Pessoa>();
     public DbSet<Transacao> Transacoes => Set<Transacao>();
 
-    //metodo construtor
-    //options e uma propriedade que recebe as opções do contexto
-    //base(options) chama o construtor da classe DbContext
+    // Construtor que recebe as opções de configuração do contexto (string de conexão, provider, etc.)
+    // e as repassa para a classe base DbContext.
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
 
-    //metodo que configura o contexto
-    //base(options) chama o metodo construtor da classe DbContext
+    // Configura o mapeamento das entidades para o banco de dados
+    // usando a Fluent API do Entity Framework Core.
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configuração da entidade Pessoa com Deleção em Cascata
+        // Configuração da entidade Pessoa: chave primária, restrições e cascade delete.
         modelBuilder.Entity<Pessoa>(entity =>
         {
             entity.HasKey(p => p.Id);
@@ -38,7 +37,7 @@ public class AppDbContext : DbContext
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // Configuração da entidade Transação
+        // Configuração da entidade Transação: chave primária, restrições e índice.
         modelBuilder.Entity<Transacao>(entity =>
         {
             entity.HasKey(t => t.Id);

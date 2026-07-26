@@ -2,18 +2,17 @@ using Backend.DTOs;
 
 namespace Backend.Services;
 
-// Interface para o serviço de gerenciamento de pessoas.
+// Contrato do serviço de gerenciamento de pessoas.
 public interface IPessoaService
 {
-    //Cria uma nova pessoa na residência.
-    //CriarAsync recebe como parametro um CriarPessoaRequest e retorna uma PessoaResponse
+    // Cria uma nova pessoa na residência.
+    // Recebe um CriarPessoaRequest e retorna os dados da pessoa criada.
     Task<PessoaResponse> CriarAsync(CriarPessoaRequest request);
 
     // Lista todas as pessoas cadastradas.
     Task<IEnumerable<PessoaResponse>> ListarAsync();
 
-    // Deleta uma pessoa e todas as suas transações associadas (cascade delete).
-    // Parametro id: Id da pessoa a ser deletada.
-    // Retorna: True se a pessoa foi encontrada e deletada.
+    // Remove uma pessoa e todas as suas transações (cascade delete).
+    // Retorna true se encontrada e removida, false caso contrário.
     Task<bool> DeletarAsync(int id);
 }

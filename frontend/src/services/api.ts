@@ -1,4 +1,4 @@
-//importação das interfaces
+// Importação dos tipos utilizados nas requisições e respostas da API.
 import type {
   Pessoa,
   CriarPessoaRequest,
@@ -8,11 +8,11 @@ import type {
   ApiError,
 } from '../types/types';
 
-//cria a constante API_BASE que define a rota base da API
+// URL base para todas as chamadas à API do backend.
 const API_BASE = '/api';
 
 
-//cria a classe ApiRequestError que estende Error
+// Erro personalizado para falhas de comunicação com a API, incluindo o status HTTP.
 export class ApiRequestError extends Error {
   public statusCode: number;
 
@@ -23,7 +23,7 @@ export class ApiRequestError extends Error {
   }
 }
 
-//função handleResponse que lida com a resposta da API
+// Processa a resposta HTTP: extrai o JSON em caso de sucesso ou lança ApiRequestError.
 async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     let errorMessage = 'Erro desconhecido ao comunicar com o servidor.';
@@ -40,7 +40,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
     throw new ApiRequestError(errorMessage, response.status);
   }
 
-  // 204 No Content não tem body
+  // HTTP 204 não possui corpo na resposta.
   if (response.status === 204) {
     return undefined as T;
   }
@@ -48,13 +48,13 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json();
 }
 
-//função listarPessoas que busca todas as pessoas cadastradas
+// Busca todas as pessoas cadastradas (GET /api/pessoas).
 export async function listarPessoas(): Promise<Pessoa[]> {
   const response = await fetch(`${API_BASE}/pessoas`);
   return handleResponse<Pessoa[]>(response);
 }
 
-//função criarPessoa que cria uma nova pessoa na residência
+// Cadastra uma nova pessoa (POST /api/pessoas).
 export async function criarPessoa(data: CriarPessoaRequest): Promise<Pessoa> {
   const response = await fetch(`${API_BASE}/pessoas`, {
     method: 'POST',
@@ -64,7 +64,7 @@ export async function criarPessoa(data: CriarPessoaRequest): Promise<Pessoa> {
   return handleResponse<Pessoa>(response);
 }
 
-//função deletarPessoa que deleta uma pessoa e todas as suas transações (cascade).
+// Remove uma pessoa e suas transações (DELETE /api/pessoas/{id}).
 export async function deletarPessoa(id: number): Promise<void> {
   const response = await fetch(`${API_BASE}/pessoas/${id}`, {
     method: 'DELETE',
@@ -72,13 +72,13 @@ export async function deletarPessoa(id: number): Promise<void> {
   return handleResponse<void>(response);
 }
 
-//função listarTransacoes que busca todas as transações cadastradas
+// Busca todas as transações cadastradas (GET /api/transacoes).
 export async function listarTransacoes(): Promise<Transacao[]> {
   const response = await fetch(`${API_BASE}/transacoes`);
   return handleResponse<Transacao[]>(response);
 }
 
-//função criarTransacao que cria uma nova transação financeira
+// Cadastra uma nova transação financeira (POST /api/transacoes).
 export async function criarTransacao(data: CriarTransacaoRequest): Promise<Transacao> {
   const response = await fetch(`${API_BASE}/transacoes`, {
     method: 'POST',
@@ -88,7 +88,7 @@ export async function criarTransacao(data: CriarTransacaoRequest): Promise<Trans
   return handleResponse<Transacao>(response);
 }
 
-//função obterResumo que busca o resumo financeiro consolidado da residência
+// Busca o resumo financeiro consolidado da residência (GET /api/resumo).
 export async function obterResumo(): Promise<ResumoGeral> {
   const response = await fetch(`${API_BASE}/resumo`);
   return handleResponse<ResumoGeral>(response);

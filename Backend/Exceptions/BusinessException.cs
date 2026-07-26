@@ -1,15 +1,12 @@
 namespace Backend.Exceptions;
 
-// Exceção customizada para violações de regras de negócio.
-// É capturada pelo <see cref="Backend.Middleware.ExceptionMiddleware"/> e convertida
-// em uma resposta HTTP 422 (Unprocessable Entity) com mensagem amigável.
-// 
-// Método GET e SET para a exceção
+// Exceção personalizada lançada quando uma regra de negócio é violada.
+// Capturada pelo ExceptionMiddleware e convertida em resposta HTTP 422
+// (Unprocessable Entity), retornando a mensagem de erro ao cliente.
 public class BusinessException : Exception
 {
-    // Método GET e SET
-    // Cria uma nova exceção de regra de negócio com a mensagem de erro especificada.
-    // Parametro message: Mensagem descritiva do erro de negócio.
+    // Construtor que recebe a mensagem descritiva do erro de negócio
+    // e a repassa para a classe base Exception.
     public BusinessException(string message) : base(message)
     {
     }

@@ -1,23 +1,19 @@
 import { useEffect, useState } from 'react';
 
-//NotificationType -  Define os tipos de notificação suportados.
-//success: Ação completada com sucesso (verde).
-//error: Erro ou violação de regra de negócio (vermelho).
+// Tipos de notificação suportados.
+// success: operação concluída (verde). error: falha ou violação de regra (vermelho).
 type NotificationType = 'success' | 'error';
 
-//interface - define as propriedades do componente Notification
-//message: string - mensagem a ser exibida
-//type: NotificationType - tipo de notificação
-//onClose: () => void - função para fechar a notificação
+// Props do componente Notification.
+// message: texto exibido. type: estilo visual. onClose: callback de fechamento.
 interface NotificationProps {
   message: string;
   type: NotificationType;
   onClose: () => void;
 }
 
-//Componente de notificação toast.
-//Exibe mensagens temporárias (5s) com animação de entrada/saída.
-//Usado para feedback de operações CRUD e erros de regra de negócio.
+// Componente de notificação toast com auto-dismiss (5s) e animação de entrada/saída.
+// Usado para feedback de operações CRUD e erros de validação.
 export default function Notification({ message, type, onClose }: NotificationProps) {
   const [isExiting, setIsExiting] = useState(false);
 
@@ -31,7 +27,7 @@ export default function Notification({ message, type, onClose }: NotificationPro
     return () => clearTimeout(timer);
   }, [onClose]);
 
-  /** Fecha a notificação manualmente ao clicar no X. */
+  // Fecha a notificação manualmente ao clicar no botão X.
   const handleClose = () => {
     setIsExiting(true);
     setTimeout(onClose, 300);

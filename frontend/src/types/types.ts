@@ -1,20 +1,20 @@
-//exporta a interface CriarPessoaRequest
+// Dados necessários para criar uma nova pessoa.
 export interface CriarPessoaRequest {
   nome: string;
   idade: number;
 }
 
-//exporta a interface Pessoa
+// Representa uma pessoa retornada pela API.
 export interface Pessoa {
   id: number;
   nome: string;
   idade: number;
 }
 
-//exporta o tipo Transacao
+// Tipos possíveis de transação financeira.
 export type TipoTransacao = 'Despesa' | 'Receita';
 
-//exporta a interface CriarTransacaoRequest
+// Dados necessários para criar uma nova transação.
 export interface CriarTransacaoRequest {
   descricao: string;
   valor: number;
@@ -22,7 +22,7 @@ export interface CriarTransacaoRequest {
   pessoaId: number;
 }
 
-//exporta a interface Transacao
+// Representa uma transação retornada pela API.
 export interface Transacao {
   id: number;
   descricao: string;
@@ -32,7 +32,7 @@ export interface Transacao {
   pessoaNome: string;
 }
 
-//exporta a interface ResumoPessoa
+// Resumo financeiro individual de uma pessoa.
 export interface ResumoPessoa {
   pessoaId: number;
   pessoaNome: string;
@@ -41,7 +41,7 @@ export interface ResumoPessoa {
   saldoLiquido: number;
 }
 
-//exporta a interface ResumoGeral
+// Resumo financeiro consolidado de toda a residência.
 export interface ResumoGeral {
   resumosPorPessoa: ResumoPessoa[];
   totalGeralReceitas: number;
@@ -49,7 +49,7 @@ export interface ResumoGeral {
   saldoLiquidoGeral: number;
 }
 
-//exporta a interface ApiError
+// Estrutura padrão de erro retornada pela API.
 export interface ApiError {
   erro: string;
 }

@@ -6,8 +6,8 @@ using Backend.Models;
 
 namespace Backend.Services;
 
-//TransacaoService implementa a interface ITransacaoService
-//TransacaoService e o servico que lida com as operacoes de CRUD (Create, Read, Update, Delete) das transacoes
+// Implementação do serviço de transações financeiras.
+// Contém as operações de criação, listagem e cálculo de resumos.
 public class TransacaoService : ITransacaoService
 {
     private readonly AppDbContext _context;
@@ -17,8 +17,8 @@ public class TransacaoService : ITransacaoService
         _context = context;
     }
 
-    //Cria uma nova transacao na residência.
-    //CriaAsync recebe como parametro um CriarTransacaoRequest e retorna uma TransacaoResponse.
+    // Cria uma nova transação após validar descrição, valor, pessoa e regra de menores.
+    // Retorna os dados da transação criada.
     public async Task<TransacaoResponse> CriarAsync(CriarTransacaoRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.Descricao))
@@ -31,8 +31,7 @@ public class TransacaoService : ITransacaoService
         if (pessoa == null)
             throw new BusinessException($"Pessoa com ID {request.PessoaId} não foi encontrada.");
 
-        // Regra de negócio explícita e legível:
-        // Menores de 18 anos só podem registrar Despesas, nunca Receitas.
+        // Regra de negócio: menores de 18 anos só podem registrar Despesas.
         if (pessoa.Idade < 18 && request.Tipo == TipoTransacao.Receita)
         {
             throw new BusinessException(
@@ -54,7 +53,7 @@ public class TransacaoService : ITransacaoService
         return MapToResponse(transacao, pessoa.Nome);
     }
 
-    //Lista todas as transacoes cadastradas ordenadas por ID em ordem decrescente.
+    // Lista todas as transações ordenadas por Id descendente (mais recentes primeiro).
     public async Task<IEnumerable<TransacaoResponse>> ListarAsync()
     {
         var transacoes = await _context.Transacoes
@@ -66,8 +65,8 @@ public class TransacaoService : ITransacaoService
         return transacoes.Select(t => MapToResponse(t, t.Pessoa?.Nome ?? "Desconhecido"));
     }
 
-    //Obtem um resumo geral das transacoes por pessoa.
-    //Recebe um ResumoGeralDto contendo o resumo geral das transacoes por pessoa.
+    // Calcula o resumo financeiro agrupado por pessoa, com totais de receitas e despesas.
+    // Retorna também os totais gerais da residência.
     public async Task<ResumoGeralDto> ObterResumoAsync()
     {
         var pessoas = await _context.Pessoas
@@ -92,7 +91,7 @@ public class TransacaoService : ITransacaoService
         };
     }
 
-    //Metodo privado que mapeia uma Transacao para uma TransacaoResponse.
+    // Mapeia uma entidade Transacao para o DTO TransacaoResponse.
     private static TransacaoResponse MapToResponse(Transacao transacao, string pessoaNome) => new()
     {
         Id = transacao.Id,

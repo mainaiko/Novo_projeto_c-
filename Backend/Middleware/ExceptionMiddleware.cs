@@ -6,8 +6,8 @@ namespace Backend.Middleware;
 
 
 // Middleware global de tratamento de exceções.
-// Intercepta exceções não tratadas e retorna respostas HTTP padronizadas.
-// concentra aqui o tratamento de erros, evita try-catch repetitivos nos controllers e garante um formato de resposta de erro consistente.
+// Intercepta erros não tratados em todo o pipeline HTTP e retorna
+// respostas JSON padronizadas, evitando try-catch repetitivos nos controllers.
 
 public class ExceptionMiddleware
 {
@@ -20,9 +20,9 @@ public class ExceptionMiddleware
         _logger = logger;
     }
 
-    // Executa o middleware, capturando exceções e convertendo-as em respostas HTTP apropriadas.
-    // <see cref="BusinessException"/>: HTTP 422 com mensagem amigável.
-    // Outras exceções: HTTP 500 com mensagem genérica (detalhes são logados, não expostos).
+    // Executa o próximo middleware do pipeline dentro de um try-catch.
+    // BusinessException → HTTP 422 com mensagem do erro de negócio.
+    // Outras exceções → HTTP 500 com mensagem genérica (detalhes são logados).
     public async Task InvokeAsync(HttpContext context)
     {
         try
@@ -45,7 +45,7 @@ public class ExceptionMiddleware
         }
     }
 
-    // Escreve uma resposta de erro JSON padronizada no formato { "erro": "mensagem" }.
+    // Monta e envia uma resposta JSON de erro no formato { "erro": "mensagem" }.
     private static async Task WriteErrorResponse(HttpContext context, HttpStatusCode statusCode, string message)
     {
         context.Response.ContentType = "application/json";

@@ -2,17 +2,15 @@ import { useState } from 'react';
 import type { Pessoa, CriarTransacaoRequest, TipoTransacao } from '../types/types';
 import { criarTransacao, ApiRequestError } from '../services/api';
 
-//interface-define as propriedades do componente TransacaoForm
-//pessoas: Pessoa[] - lista de pessoas
-//onTransacaoCriada: () => void - função para criar transação
-//onNotify: (message: string, type: 'success' | 'error') => void - função para notificar
+// Props do componente TransacaoForm.
+// pessoas: lista para o select. onTransacaoCriada: callback. onNotify: notificações.
 interface TransacaoFormProps {
   pessoas: Pessoa[];
   onTransacaoCriada: () => void;
   onNotify: (message: string, type: 'success' | 'error') => void;
 }
 
-//exporta o componente TransacaoForm
+// Formulário para cadastro de uma nova transação financeira.
 export default function TransacaoForm({ pessoas, onTransacaoCriada, onNotify }: TransacaoFormProps) {
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
@@ -62,8 +60,7 @@ export default function TransacaoForm({ pessoas, onTransacaoCriada, onNotify }: 
     }
   };
 
-  //renderiza o componente TransacaoForm
-  //o formulário possui três campos: descrição, valor e tipo
+  // Renderiza o formulário com campos de pessoa, tipo, valor e descrição.
   return (
     <form className="form-card" onSubmit={handleSubmit}>
       <h3 className="form-card__title">💰 Nova Transação</h3>
